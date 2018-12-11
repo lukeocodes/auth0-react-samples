@@ -1,0 +1,10 @@
+.DS_Store
+node_modules
+**/.env
+**/auth0-variables.js
+npm-debug.log
+
+# editors
+
+.idea
+.editorconfig
