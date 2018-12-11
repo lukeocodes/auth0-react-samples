@@ -53,33 +53,23 @@ class Auth {
     scope: 'openid profile email'
   })
 
-  constructor() {
-    this.login = this.login.bind(this)
-    this.logout = this.logout.bind(this)
-    this.isAuthenticated = this.isAuthenticated.bind(this)
-    this.getProfile = this.getProfile.bind(this)
-    this.handleAuthentication = this.handleAuthentication.bind(this)
-    this.renewAuthentication = this.renewAuthentication.bind(this)
-    this.getIdToken = this.getIdToken.bind(this)
+  loginCallback = () => {}
+  logoutCallback = () => {}
 
-    this.loginCallback = () => {}
-    this.logoutCallback = () => {}
-  }
-
-  login(customState) {
+  login = (customState) => {
     this.webAuth.authorize({ state: encodeState(customState) })
   }
 
-  logout(returnTo) {
+  logout = (returnTo) => {
     this.localLogout()
     this.webAuth.logout({ returnTo: returnTo, clientID: AUTH_CONFIG.clientId })
   }
 
-  isAuthenticated() {
+  isAuthenticated = () => {
     return localStorage.getItem(localStorageKey) ===  'true'
   }
 
-  renewAuthentication() {
+  renewAuthentication = () => {
     return new Promise((resolve, reject) => {
       this.webAuth.checkSession({}, (err, authResult) => {
         if (err) {
@@ -95,7 +85,7 @@ class Auth {
     })
   }
 
-  handleAuthentication() {
+  handleAuthentication = () => {
     return new Promise((resolve, reject) => {
       this.webAuth.parseHash((err, authResult) => {
         if (err) {
@@ -111,7 +101,7 @@ class Auth {
     })
   }
 
-  localLogin(authResult) {
+  localLogin = (authResult) => {
     localStorage.setItem(localStorageKey, true)
 
     this.userProfile = authResult.idTokenPayload
@@ -126,7 +116,7 @@ class Auth {
     })
   }
 
-  localLogout() {
+  localLogout = () => {
     localStorage.removeItem(localStorageKey)
 
     this.userProfile = null
@@ -136,15 +126,15 @@ class Auth {
     this.logoutCallback({ loggedIn: false })
   }
 
-  getProfile() {
+  getProfile = () => {
     return this.userProfile
   }
 
-  isIdTokenValid() {
+  isIdTokenValid = () => {
     return tokenValidator(this.idToken, this.idTokenExpiresAt)
   }
 
-  getIdToken() {
+  getIdToken = () => {
     if (!this.isIdTokenValid()) {
       this.renewAuthentication()
     }

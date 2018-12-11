@@ -45,40 +45,31 @@ class Auth {
     scope: 'openid profile email'
   })
 
-  constructor() {
-    this.login = this.login.bind(this)
-    this.logout = this.logout.bind(this)
-    this.isAuthenticated = this.isAuthenticated.bind(this)
-    this.getProfile = this.getProfile.bind(this)
-    this.handleAuthentication = this.handleAuthentication.bind(this)
-    this.renewAuthentication = this.renewAuthentication.bind(this)
+  loginCallback = () => {}
+  logoutCallback = () => {}
 
-    this.loginCallback = () => {}
-    this.logoutCallback = () => {}
-  }
-
-  login(customState) {
+  login = (customState) => {
     this.webAuth.authorize({ state: encodeState(customState) })
   }
 
-  logout(returnTo) {
+  logout = (returnTo) => {
     this.localLogout()
     this.webAuth.logout({ returnTo: returnTo, clientID: AUTH_CONFIG.clientId })
   }
 
-  isAuthenticated() {
+  isAuthenticated = () => {
     return localStorage.getItem(localStorageKey) ===  'true'
   }
 
-  renewAuthentication() {
+  renewAuthentication = () => {
     this.webAuth.checkSession({}, this.handleAuthResult.bind(this))
   }
 
-  handleAuthentication() {
+  handleAuthentication = () => {
     this.webAuth.parseHash(this.handleAuthResult.bind(this))
   }
 
-  handleAuthResult(err, authResult) {
+  handleAuthResult = (err, authResult) => {
     if (authResult) {
       this.localLogin(authResult)
     } else if (err) {
@@ -87,7 +78,7 @@ class Auth {
     }
   }
 
-  localLogin(authResult) {
+  localLogin = (authResult) => {
     localStorage.setItem(localStorageKey, true)
 
     this.userProfile = authResult.idTokenPayload
@@ -100,7 +91,7 @@ class Auth {
     })
   }
 
-  localLogout() {
+  localLogout = () => {
     localStorage.removeItem(localStorageKey)
 
     this.userProfile = null
@@ -108,7 +99,7 @@ class Auth {
     this.logoutCallback({ loggedIn: false })
   }
 
-  getProfile() {
+  getProfile = () => {
     return this.userProfile
   }
 }
