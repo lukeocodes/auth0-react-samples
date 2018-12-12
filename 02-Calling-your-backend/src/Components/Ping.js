@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { CONFIG } from '../../config'
+import { CONFIG } from '../config'
 
 class Ping extends Component {
   constructor(props) {
@@ -15,11 +15,6 @@ class Ping extends Component {
   callPrivate(url) {
     const { getIdToken } = this.props.auth
     this.callApi(url, { 'Authorization': `Bearer ${getIdToken()}`})
-  }
-
-  callAdmin(url) {
-    const { getAccessToken } = this.props.auth
-    this.callApi(url, { 'Authorization': `Bearer ${getAccessToken()}`})
   }
 
   callApi(url, headers) {
@@ -49,14 +44,6 @@ class Ping extends Component {
                 </div>
                 <div className="card-footer">
                   <button type="button" className="btn btn-danger btn-block " style={{ cursor: 'pointer' }} onClick={() => this.callPrivate('/private')}>Call Private</button>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <p className="card-text">Call an admin endpoint.</p>
-                </div>
-                <div className="card-footer">
-                  <button type="button" className="btn btn-warning btn-block " style={{ cursor: 'pointer' }} onClick={() => this.callAdmin('/admin')}>Call Admin</button>
                 </div>
               </div>
             </div>
